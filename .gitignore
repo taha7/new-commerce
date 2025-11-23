@@ -1,2 +1,9 @@
 # Ignore source map files
 *.map
+
+# Dependency and build folders
+node_modules/
+dist/
+
+# Environment files
+.env
