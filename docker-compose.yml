@@ -41,9 +41,85 @@ services:
     networks:
       - ecommerce_network
 
+  # API Gateway Service
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: ecommerce_api_gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - CORS_ORIGIN=http://localhost:5173
+      - AUTH_SERVICE_URL=http://auth:3001
+      - VENDOR_SERVICE_URL=http://vendor:3002
+      - DATABASE_URL=postgresql://user:password@postgres:5432/ecommerce
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+      - auth
+      - vendor
+    networks:
+      - ecommerce_network
+
+  # Auth Service
+  auth:
+    build:
+      context: ./services/auth
+      dockerfile: Dockerfile
+    container_name: ecommerce_auth
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://user:password@postgres:5432/ecommerce
+      - JWT_SECRET=your-secret-key-change-in-production
+      - JWT_EXPIRES_IN=24h
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ecommerce_network
+
+  # Vendor Service
+  vendor:
+    build:
+      context: ./services/vendor
+      dockerfile: Dockerfile
+    container_name: ecommerce_vendor
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://user:password@postgres:5432/ecommerce
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ecommerce_network
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ecommerce_network
+
 volumes:
   postgres_data:
   elasticsearch_data:
+  redis_data:
 
 networks:
   ecommerce_network:
