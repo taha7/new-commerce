@@ -1,0 +1,30 @@
+{
+  "name": "e-commerce-platform",
+  "version": "1.0.0",
+  "description": "Multi-vendor e-commerce platform with microservices architecture",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*"
+  ],
+  "scripts": {
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v --remove-orphans",
+    "dev:admin": "pnpm --filter admin run dev",
+    "dev:storefront": "pnpm --filter storefront run dev",
+    "build": "pnpm run build:services && pnpm run build:apps",
+    "build:services": "pnpm --filter '{services/*}' run build",
+    "build:apps": "pnpm --filter '{apps/*}' run build",
+    "lint": "pnpm --filter '*' run lint",
+    "test": "pnpm --filter '*' run test"
+  },
+  "devDependencies": {},
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
