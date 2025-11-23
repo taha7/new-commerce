@@ -8,11 +8,11 @@
     "services/*"
   ],
   "scripts": {
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
-    "docker:build": "docker-compose build",
-    "docker:logs": "docker-compose logs -f",
-    "docker:clean": "docker-compose down -v --remove-orphans",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:build": "docker compose build",
+    "docker:logs": "docker compose logs -f",
+    "docker:clean": "docker compose down -v --remove-orphans",
     "dev:admin": "pnpm --filter admin run dev",
     "dev:storefront": "pnpm --filter storefront run dev",
     "build": "pnpm run build:services && pnpm run build:apps",
