@@ -36,14 +36,14 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 
 ### **Backend Microservices**
 - **API Gateway**: Request routing, authentication, rate limiting (NestJS)
-- **Auth Service**: JWT, OAuth, multi-tenant authentication (NestJS)
-- **Vendor Service**: Vendor management and store configuration (NestJS)
-- **Product Service**: Catalog, variations, inventory management (NestJS)
-- **Theme Service**: Dynamic theme management (NestJS)
-- **Order Service**: Cart, checkout, order processing (NestJS)
-- **Payment Service**: Payment gateway integrations (NestJS)
-- **Search Service**: Elasticsearch integration (NestJS)
-- **Notification Service**: Email, SMS, push notifications (NestJS)
+- **Auth Service**: JWT, OAuth, user registration and authentication (NestJS)
+- **Vendor Service**: Store creation, vendor management, store configuration (NestJS)
+- **Product Service**: Product catalog, variations, inventory management (NestJS) *[Phase 2]*
+- **Theme Service**: Dynamic theme management and customization (NestJS) *[Phase 3]*
+- **Order Service**: Cart, checkout, order processing (NestJS) *[Phase 4]*
+- **Payment Service**: Payment gateway integrations (NestJS) *[Phase 4]*
+- **Search Service**: Elasticsearch integration (NestJS) *[Phase 4]*
+- **Notification Service**: Email, SMS, push notifications (NestJS) *[Phase 2+]*
 
 ### **Infrastructure**
 - **Orchestration**: Kubernetes
@@ -156,11 +156,19 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 ### Phase-Based Development
 We follow a structured approach divided into 5 phases:
 
-1. **Phase 1: Foundation** - Monorepo setup, core services, development environment
-2. **Phase 2: Core Logic** - Vendor management, product system, basic storefront  
-3. **Phase 3: Multi-Tenancy** - Subdomain routing, theme system, Kubernetes
-4. **Phase 4: Advanced Features** - Orders, payments, admin panel, search
-5. **Phase 5: Production** - Deployment, optimization, monitoring
+1. **Phase 1: Vendor Foundation** - Vendor registration, store creation, store configuration, and subdomain preview
+2. **Phase 2: Core Logic** - Product system, inventory management, basic storefront features
+3. **Phase 3: Multi-Tenancy** - Dynamic subdomain routing, theme system, advanced store customization
+4. **Phase 4: Advanced Features** - Orders, payments, admin panel, search functionality
+5. **Phase 5: Production** - Deployment, optimization, monitoring, performance tuning
+
+### Phase 1 Goals (Current Focus)
+- ✅ **Vendor Registration**: Complete signup and authentication system
+- 🚧 **Store Creation**: Vendors can create and name their stores
+- 🚧 **Store Configuration**: Basic store settings (name, description, branding colors, contact info)
+- 🚧 **Subdomain Preview**: Vendors can see their future subdomain (vendor-name.platform.com)
+- 🚧 **Vendor Dashboard**: Simple interface to manage store settings
+- ❌ **Product Management**: Not included in Phase 1 (comes in Phase 2)
 
 ### Service Ports
 | Service | Port | Purpose |
@@ -288,11 +296,31 @@ This project serves as a comprehensive learning platform for:
 
 ## 🗺️ Roadmap
 
-- [x] **Phase 1**: Foundation and core services setup
-- [ ] **Phase 2**: Vendor management and product system
-- [ ] **Phase 3**: Multi-tenancy and theme system  
-- [ ] **Phase 4**: Order management and payments
+### Phase 1: Vendor Foundation (Current) 🚧
+- [x] **Infrastructure Setup**: Docker services, database, development environment
+- [x] **Service Architecture**: API Gateway, Auth Service, Vendor Service running
+- [ ] **Vendor Registration**: Complete signup flow with email verification
+- [ ] **Store Creation**: Vendors can create stores with basic information
+- [ ] **Store Configuration**: 
+  - Store name, description, and contact information
+  - Basic branding (colors, logo upload)
+  - Business details (category, location)
+  - Store settings (timezone, currency)
+- [ ] **Subdomain Preview**: Show vendors their future subdomain URL
+- [ ] **Vendor Dashboard**: Interface to manage store settings and view subdomain
+
+### Future Phases
+- [ ] **Phase 2**: Product management and inventory system
+- [ ] **Phase 3**: Dynamic subdomain routing and theme system  
+- [ ] **Phase 4**: Order management and payment processing
 - [ ] **Phase 5**: Production deployment and optimization
+
+### Phase 1 Success Criteria
+✅ **Vendor can register an account**
+✅ **Vendor can log in and access dashboard**  
+✅ **Vendor can create a store with configuration**
+✅ **Vendor can see their subdomain preview (vendor-name.platform.com)**
+✅ **Store settings are persistent and editable**
 
 ## 📄 License
 

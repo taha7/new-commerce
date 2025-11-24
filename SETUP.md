@@ -1,5 +1,11 @@
 # Development Environment Setup Guide
 
+## 🎯 Phase 1 Development Focus
+
+**Current Goal**: Build vendor registration, store creation, store configuration, and subdomain preview functionality.
+
+**What we're NOT building yet**: Product management, orders, payments, or complex themes. Those come in later phases.
+
 ## 🚀 Quick Start (Docker-First Approach)
 
 The easiest way to get started is using Docker Compose, which runs all services and infrastructure:
@@ -108,14 +114,74 @@ If you have other services running on these ports, stop them or modify the ports
 pnpm run docker:clean
 ```
 
-## 🎯 Next Steps
+## 🎯 Phase 1 Development Tasks
 
-Once everything is running:
-1. Access API Gateway at http://localhost:3000
-2. Start building features in the services
-3. Run frontend apps locally for UI development
+Once everything is running, you'll be building these features:
+
+### 1. **Vendor Registration & Authentication** 
+- User signup with email/password
+- Email verification flow
+- Login/logout functionality
+- JWT token management
+
+### 2. **Store Creation**
+- New vendor can create their first store
+- Store name validation (for subdomain generation)
+- Basic store information capture
+
+### 3. **Store Configuration Interface**
+```bash
+# Key store settings to implement:
+- Store name & description
+- Contact information (email, phone, address)
+- Basic branding (primary color, logo upload)
+- Business details (category, timezone, currency)
+- Store settings (open hours, policies)
+```
+
+### 4. **Subdomain Preview**
+- Show vendors their subdomain: `{store-name}.platform.com`
+- Validate subdomain availability
+- Display preview of how their store will be accessible
+
+### 5. **Vendor Dashboard**
+- Simple UI to edit store settings
+- View current store configuration
+- See subdomain URL and status
+
+## 🛠️ Development Approach
+
+### Backend (Services)
+- **Auth Service**: Handle user registration, login, JWT tokens
+- **Vendor Service**: Store CRUD operations, subdomain generation
+- **API Gateway**: Route requests, authenticate users
+
+### Frontend (Apps)
+- **Admin Panel**: For platform administration *(Phase 4)*
+- **Vendor Dashboard**: For vendors to manage their stores
+- **Storefront**: Customer-facing store *(Phase 2+)*
+
+### Database Schema (Phase 1)
+```sql
+-- Core tables needed for Phase 1
+users (id, email, password, verified_at, created_at)
+vendors (id, user_id, created_at)
+stores (id, vendor_id, name, slug, description, settings, created_at)
+```
 4. Use the database and Redis for data persistence
+
+## ✅ Phase 1 Success Criteria
+
+You'll know Phase 1 is complete when:
+- ✅ A vendor can register an account with email verification
+- ✅ A vendor can login and access their dashboard  
+- ✅ A vendor can create a store with configuration
+- ✅ A vendor can see their subdomain preview (e.g., `my-store.platform.com`)
+- ✅ Store settings are saved and can be edited
+- ✅ Basic vendor dashboard is functional
+
+**Phase 2 starts** when vendors can begin adding products to their configured stores.
 
 ---
 
-**Note**: This setup is optimized for development. All services run in Docker for consistency, while frontend apps run locally for fast development cycles.
+**Note**: Focus only on vendor registration, store creation, and configuration. Product management, ordering, and payments are explicitly out of scope for Phase 1.
