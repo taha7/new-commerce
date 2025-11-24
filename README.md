@@ -57,7 +57,7 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 24+
 - PNPM 8+
 - Docker & Docker Compose
 - Kubernetes (for production)
@@ -75,34 +75,49 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
    pnpm install
    ```
 
-3. **Start infrastructure services**
+3. **Start all services with Docker**
    ```bash
-   docker-compose up -d
+   # Build and start all services and infrastructure
+   pnpm run docker:build
+   pnpm run docker:up
+   
+   # View logs
+   pnpm run docker:logs
+   
+   # Stop all services
+   pnpm run docker:down
    ```
 
-4. **Set up environment variables**
+4. **Set up environment variables (optional)**
    ```bash
-   # Copy environment files for each service
+   # Copy environment files for each service if customization needed
    cd services/auth && cp .env.example .env
    cd ../api-gateway && cp .env.example .env
-   # Vendor service already has .env
+   cd ../vendor && cp .env.example .env
    ```
 
-5. **Start development services**
+5. **Start frontend applications (for development)**
    ```bash
-   # Start all services in development mode
-   pnpm dev
-   
-   # Or start individual services:
-   cd services/api-gateway && pnpm run start:dev    # Port 3000
-   cd services/auth && pnpm run start:dev           # Port 3001  
-   cd services/vendor && pnpm run start:dev         # Port 3002
+   # Run frontend apps locally for fast development
+   pnpm run dev:admin        # Admin panel at http://localhost:5173
+   pnpm run dev:storefront   # Customer storefront at http://localhost:3000
    ```
 
-6. **Start frontend applications**
+### Service URLs (when running)
+- **API Gateway**: http://localhost:3000
+- **Auth Service**: http://localhost:3001  
+- **Vendor Service**: http://localhost:3002
+- **PostgreSQL**: localhost:5432
+- **Redis**: localhost:6379
+- **Elasticsearch**: http://localhost:9200
+- **RabbitMQ Management**: http://localhost:15672 (user/password)
+
+6. **Verify everything is running**
    ```bash
-   cd apps/admin && pnpm dev         # Admin panel
-   cd apps/storefront && pnpm dev    # Customer storefront
+   # Check service status
+   curl http://localhost:3000  # API Gateway
+   curl http://localhost:3001  # Auth Service
+   curl http://localhost:3002  # Vendor Service
    ```
 
 ## 📁 Project Structure
@@ -200,8 +215,18 @@ pnpm test:cov
 
 ### Local Development
 ```bash
-docker-compose up -d  # Infrastructure only
-pnpm dev             # All services in development mode
+# Start all services (infrastructure + microservices)
+pnpm run docker:up
+
+# Start frontend apps for development
+pnpm run dev:admin        # React admin panel
+pnpm run dev:storefront   # Next.js storefront
+
+# View logs
+pnpm run docker:logs
+
+# Stop everything
+pnpm run docker:down
 ```
 
 ### Kubernetes Production
