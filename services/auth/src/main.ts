@@ -3,8 +3,20 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  // Enable CORS
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+    credentials: true,
+  });
+
   const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`Auth Service is running on: http://localhost:${port}`);
 }
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Failed to start auth service:', error);
+  process.exit(1);
+});
