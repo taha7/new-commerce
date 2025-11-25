@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../generated/prisma-client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Vendor {
+    id           String  @id @default(cuid())
+    userId       String  @unique @map("user_id") // Links to User from Auth service
+    businessName String  @map("business_name")
+    businessType String  @map("business_type")
+    description  String?
+    contactPhone String? @map("contact_phone")
+    address      String
+    city         String
+    state        String
+    zipCode      String  @map("zip_code")
+    country      String
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    // Relation to stores (one vendor can have multiple stores)
+    stores Store[]
+
+    @@map("vendors")
+}
+
+model Store {
+    id          String  @id @default(cuid())
+    vendorId    String  @map("vendor_id")
+    name        String
+    slug        String  @unique // for subdomain generation
+    description String?
+    settings    Json? // store configuration as JSON
+    isActive    Boolean @default(true) @map("is_active")
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    // Relation to vendor
+    vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+    @@map("stores")
+}
