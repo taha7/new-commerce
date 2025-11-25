@@ -11,3 +11,7 @@ dist/
 # Lock files (keep pnpm-lock.yaml at root, ignore others)
 package-lock.json
 yarn.lock
+
+# Prisma generated files
+**/generated/
+**/@prisma/client/

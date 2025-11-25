@@ -12,7 +12,7 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 - **Vendor Isolation**: Each vendor gets their own subdomain (vendor1.platform.com)
 - **Custom Themes**: Dynamic theme loading and customization per vendor
 - **Independent Branding**: Complete control over store appearance and branding
-- **Scalable Infrastructure**: Kubernetes-based auto-scaling for high traffic
+- **Scalable Infrastructure**: Docker-based containerization with auto-scaling capabilities
 
 ### 🛒 Advanced E-Commerce Features
 - **Complex Product Variations**: Hierarchical variations (Material → Color → Size)
@@ -29,15 +29,15 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 
 ## 🏗️ Technology Stack
 
-### **Frontend**
-- **Storefront**: Next.js 15 with App Router
-- **Admin Panel**: React 18 + Vite + TailwindCSS
-- **Vendor Portal**: Next.js 15 for vendor management
+### **Frontend Applications**
+- **Storefront**: Next.js 15 with App Router (Customer-facing)
+- **Admin Panel**: React 18 + Vite + TailwindCSS (Platform administration)
+- **Vendor Portal**: Next.js 16 + shadcn/ui (Vendor management dashboard)
 
 ### **Backend Microservices**
-- **API Gateway**: Request routing, authentication, rate limiting (NestJS)
-- **Auth Service**: JWT, OAuth, user registration and authentication (NestJS)
-- **Vendor Service**: Store creation, vendor management, store configuration (NestJS)
+- **API Gateway**: Request routing, authentication, rate limiting (NestJS 11) - Port 3000
+- **Auth Service**: JWT authentication, user registration and management (NestJS 11) - Port 3001
+- **Vendor Service**: Store creation, vendor profiles, store management (NestJS 11) - Port 3002
 - **Product Service**: Product catalog, variations, inventory management (NestJS) *[Phase 2]*
 - **Theme Service**: Dynamic theme management and customization (NestJS) *[Phase 3]*
 - **Order Service**: Cart, checkout, order processing (NestJS) *[Phase 4]*
@@ -45,63 +45,173 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 - **Search Service**: Elasticsearch integration (NestJS) *[Phase 4]*
 - **Notification Service**: Email, SMS, push notifications (NestJS) *[Phase 2+]*
 
-### **Infrastructure**
-- **Orchestration**: Kubernetes
-- **Database**: PostgreSQL (multi-tenant architecture)
+### **Infrastructure & Data**
+- **Orchestration**: Docker Compose (development), Kubernetes (production)
+- **Database Architecture**: 
+  - **Separate Databases per Service** (microservices pattern)
+  - `auth_db`: User authentication and profiles
+  - `vendor_db`: Vendor data, stores, and configurations
+  - `gateway_db`: API gateway logs and routing data
+- **Database Engine**: PostgreSQL 16 Alpine
+- **Caching**: Redis 7 Alpine
+- **Message Queue**: RabbitMQ 3 with Management UI
+- **Search Engine**: Elasticsearch 8.11.1 (for product search)
+
+### **Development Tools**
+- **ORM**: Prisma 5.20.0 with code-first migrations
+- **Package Manager**: PNPM with workspace configuration
+- **Runtime**: Node.js 24.11.1
+- **Containerization**: Docker with multi-stage builds
+- **UI Components**: shadcn/ui with Tailwind CSS 4
 - **Cache**: Redis
 - **Message Queue**: RabbitMQ
 - **Search Engine**: Elasticsearch
 - **Monitoring**: Prometheus + Grafana
-- **Logging**: ELK Stack
+- **Logging**: Docker Compose logs (development), ELK Stack (production)
+
+## � Project Structure
+
+```
+e-commerce/
+├── apps/                           # Frontend applications
+│   ├── admin/                      # Platform admin dashboard (React + Vite)
+│   ├── storefront/                 # Customer-facing store (Next.js 15)
+│   └── vendor-portal/              # Vendor management portal (Next.js 16)
+├── services/                       # Backend microservices
+│   ├── api-gateway/               # Main API gateway (NestJS)
+│   ├── auth/                      # Authentication service (NestJS)
+│   └── vendor/                    # Vendor management service (NestJS)
+├── scripts/                       # Database and setup scripts
+│   └── init-databases.sql         # PostgreSQL database initialization
+├── docker-compose.yml             # Development environment setup
+├── pnpm-workspace.yaml           # PNPM monorepo configuration
+└── README.md                      # This file
+```
+
+### Database Architecture
+
+```
+PostgreSQL Instance (Port 5432)
+├── auth_db                        # Authentication service database
+│   ├── users                      # User accounts and profiles
+│   └── _prisma_migrations         # Auth service migrations
+├── vendor_db                      # Vendor service database
+│   ├── vendors                    # Vendor profiles and business info
+│   ├── stores                     # Store configurations and settings
+│   └── _prisma_migrations         # Vendor service migrations
+└── gateway_db                     # API Gateway database (future)
+    └── logs                       # API logs and analytics
+```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 24+
-- PNPM 8+
-- Docker & Docker Compose
-- Kubernetes (for production)
+- **Node.js 24.11.1** (set as default via nvm)
+- **PNPM 8+** (workspace support)
+- **Docker & Docker Compose** (for services)
 
-### Development Setup
+### Quick Start
 
 1. **Clone the repository**
    ```bash
-   git clone git@github-personal:taha7/new-commerce.git
-   cd new-commerce
+   git clone <repository-url>
+   cd e-commerce
    ```
 
-2. **Install dependencies**
+2. **Set up Node.js version**
    ```bash
-   pnpm install
+   nvm use 24.11.1
+   nvm alias default 24.11.1
    ```
 
-3. **Start all services with Docker**
+3. **Install dependencies**
    ```bash
-   # Build and start all services and infrastructure
-   pnpm run docker:build
-   pnpm run docker:up
+   pnpm install  # Installs all workspace dependencies
+   ```
+
+4. **Start backend services**
+   ```bash
+   # Start all backend services and infrastructure
+   docker compose up -d
    
-   # View logs
-   pnpm run docker:logs
+   # Wait for services to be ready (check logs)
+   docker compose logs -f
+   ```
+
+5. **Initialize databases**
+   ```bash
+   # Database schemas are automatically created
+   # Run migrations for each service
+   docker compose exec auth npx prisma db push
+   docker compose exec vendor npx prisma db push
+   ```
+
+6. **Generate Prisma clients**
+   ```bash
+   # Generate TypeScript clients for development
+   docker compose exec auth npx prisma generate
+   docker compose exec vendor npx prisma generate
+   ```
+
+7. **Start frontend applications**
+   ```bash
+   # Terminal 1: Vendor Portal
+   cd apps/vendor-portal && npm run dev  # http://localhost:3003
    
-   # Stop all services
-   pnpm run docker:down
+   # Terminal 2: Admin Panel  
+   cd apps/admin && npm run dev          # http://localhost:5173
+   
+   # Terminal 3: Storefront
+   cd apps/storefront && npm run dev     # http://localhost:3000 (Next.js)
    ```
 
-4. **Set up environment variables (optional)**
-   ```bash
-   # Copy environment files for each service if customization needed
-   cd services/auth && cp .env.example .env
-   cd ../api-gateway && cp .env.example .env
-   cd ../vendor && cp .env.example .env
-   ```
+### Service URLs (Development)
 
-5. **Start frontend applications (for development)**
-   ```bash
-   # Run frontend apps locally for fast development
-   pnpm run dev:admin        # Admin panel at http://localhost:5173
-   pnpm run dev:storefront   # Customer storefront at http://localhost:3000
-   ```
+| Service | URL | Description |
+|---------|-----|-------------|
+| API Gateway | http://localhost:3000 | Main API entry point |
+| Auth Service | http://localhost:3001 | User authentication |
+| Vendor Service | http://localhost:3002 | Vendor management |
+| Vendor Portal | http://localhost:3003 | Vendor dashboard (frontend) |
+| Admin Panel | http://localhost:5173 | Platform administration |
+| RabbitMQ UI | http://localhost:15672 | Message queue management |
+| Elasticsearch | http://localhost:9200 | Search engine |
+
+> **⚡ Development Note**: After any changes to Prisma schema files (`services/*/prisma/schema.prisma`), you need to:
+> 1. Push changes: `docker compose exec auth npx prisma db push` (and vendor)
+> 2. Regenerate clients: `docker compose exec auth npx prisma generate` (and vendor)
+> 
+> The generated client files are auto-synced to your host editor for TypeScript intellisense.
+
+## 📚 Documentation
+
+- **[SETUP.md](./SETUP.md)** - Complete development environment setup guide
+- **[API.md](./API.md)** - API documentation and endpoint reference  
+- **[SESSION_PROMPT_TEMPLATE.md](./SESSION_PROMPT_TEMPLATE.md)** - Development session context
+
+## 🧪 Testing the Implementation
+
+### Quick Test: Full Registration Flow
+```bash
+# 1. Register a new user
+curl -X POST http://localhost:3001/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"vendor@example.com","password":"secure123"}'
+
+# 2. Use the returned JWT token to create vendor profile
+# (Replace <token> with actual token from step 1)
+curl -X POST http://localhost:3002/vendor/profile \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>" \
+  -d '{"businessName":"My Store","businessType":"Retail","address":"123 Main St","city":"NYC","state":"NY","zipCode":"10001","country":"USA"}'
+```
+
+### Frontend Testing
+1. **Vendor Portal**: http://localhost:3003
+   - Register new account
+   - Complete vendor profile  
+   - Access dashboard
+2. **Admin Panel**: http://localhost:5173 (basic setup)
 
 ### Service URLs (when running)
 - **API Gateway**: http://localhost:3000
@@ -111,14 +221,6 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 - **Redis**: localhost:6379
 - **Elasticsearch**: http://localhost:9200
 - **RabbitMQ Management**: http://localhost:15672 (user/password)
-
-6. **Verify everything is running**
-   ```bash
-   # Check service status
-   curl http://localhost:3000  # API Gateway
-   curl http://localhost:3001  # Auth Service
-   curl http://localhost:3002  # Vendor Service
-   ```
 
 ## 📁 Project Structure
 
