@@ -91,4 +91,25 @@ export class AuthService {
       token,
     };
   }
+
+  async verifyToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token) as JwtPayload;
+
+      // Optionally fetch fresh user data
+      const user = await this.prisma.user.findUnique({
+        where: { id: payload.userId },
+        select: {
+          id: true,
+          email: true,
+          verified: true,
+          createdAt: true,
+        },
+      });
+
+      return user;
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+  }
 }
