@@ -37,7 +37,7 @@ model Store {
     id          String  @id @default(cuid())
     vendorId    String  @map("vendor_id")
     name        String
-    slug        String  @unique // for subdomain generation
+    slug        String  @unique // URL-friendly identifier
     description String?
     settings    Json? // store configuration as JSON
     isActive    Boolean @default(true) @map("is_active")

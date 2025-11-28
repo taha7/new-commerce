@@ -108,4 +108,16 @@ export class VendorService {
 
     return vendor.stores;
   }
+
+  /**
+   * Get store by slug (public method, no authentication required)
+   */
+  async getStoreBySlug(slug: string) {
+    return this.prisma.store.findUnique({
+      where: { slug },
+      include: {
+        vendor: true, // Include vendor information
+      },
+    });
+  }
 }

@@ -13,7 +13,9 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    const token = this.extractTokenFromHeader(request);
+    const token =
+      this.extractTokenFromHeader(request) ||
+      this.extractTokenFromCookies(request);
 
     if (!token) {
       throw new UnauthorizedException('Token not provided');
@@ -38,5 +40,11 @@ export class JwtAuthGuard implements CanActivate {
   ): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
+  }
+
+  private extractTokenFromCookies(
+    request: AuthenticatedRequest,
+  ): string | undefined {
+    return request.cookies?.session_token as string | undefined;
   }
 }
