@@ -14,55 +14,55 @@ services:
     networks:
       - ecommerce_network
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: ecommerce_rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
-    networks:
-      - ecommerce_network
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+  #   container_name: ecommerce_rabbitmq
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: user
+  #     RABBITMQ_DEFAULT_PASS: password
+  #   networks:
+  #     - ecommerce_network
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
-    container_name: ecommerce_elasticsearch
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "9200:9200"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - ecommerce_network
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+  #   container_name: ecommerce_elasticsearch
+  #   environment:
+  #     - discovery.type=single-node
+  #     - xpack.security.enabled=false
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ports:
+  #     - "9200:9200"
+  #   volumes:
+  #     - elasticsearch_data:/usr/share/elasticsearch/data
+  #   networks:
+  #     - ecommerce_network
 
-  # API Gateway Service
-  api-gateway:
-    build:
-      context: ./services/api-gateway
-      dockerfile: Dockerfile
-    container_name: ecommerce_api_gateway
-    ports:
-      - "3000:3000"
-    environment:
-      - PORT=3000
-      - NODE_ENV=development
-      - CORS_ORIGIN=http://localhost:5173
-      - AUTH_SERVICE_URL=http://auth:3001
-      - VENDOR_SERVICE_URL=http://vendor:3002
-      - DATABASE_URL=postgresql://user:password@postgres:5432/gateway_db
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - postgres
-      - redis
-      - auth
-      - vendor
-    networks:
-      - ecommerce_network
+  # # API Gateway Service
+  # api-gateway:
+  #   build:
+  #     context: ./services/api-gateway
+  #     dockerfile: Dockerfile
+  #   container_name: ecommerce_api_gateway
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - PORT=3000
+  #     - NODE_ENV=development
+  #     - CORS_ORIGIN=http://localhost:5173
+  #     - AUTH_SERVICE_URL=http://auth:3001
+  #     - VENDOR_SERVICE_URL=http://vendor:3002
+  #     - DATABASE_URL=postgresql://user:password@postgres:5432/gateway_db
+  #     - REDIS_URL=redis://redis:6379
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #     - auth
+  #     - vendor
+  #   networks:
+  #     - ecommerce_network
 
   # Auth Service
   auth:
@@ -105,6 +105,7 @@ services:
       - DATABASE_URL=postgresql://user:password@postgres:5432/vendor_db
       - JWT_SECRET=your-secret-key-change-in-production
       - REDIS_URL=redis://redis:6379
+      - BASE_DOMAIN=localhost:3003
     volumes:
       - ./services/vendor/src:/app/src
       - ./services/vendor/prisma:/app/prisma

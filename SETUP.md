@@ -191,7 +191,7 @@ pnpm run dev:storefront   # Available at http://localhost:3001
 
 ## 🔍 Useful Commands
 
-# Storefront - Next.js 15 (future development)
+# Storefront - Next.js 16 (future development)
 cd apps/storefront && npm run dev       # http://localhost:3000
 ```
 

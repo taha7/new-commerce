@@ -30,7 +30,7 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 ## 🏗️ Technology Stack
 
 ### **Frontend Applications**
-- **Storefront**: Next.js 15 with App Router (Customer-facing)
+- **Storefront**: Next.js 16 with App Router (Customer-facing)
 - **Admin Panel**: React 18 + Vite + TailwindCSS (Platform administration)
 - **Vendor Portal**: Next.js 16 + shadcn/ui (Vendor management dashboard)
 
@@ -75,7 +75,7 @@ Create a comprehensive e-commerce ecosystem that allows multiple vendors to oper
 e-commerce/
 ├── apps/                           # Frontend applications
 │   ├── admin/                      # Platform admin dashboard (React + Vite)
-│   ├── storefront/                 # Customer-facing store (Next.js 15)
+│   ├── storefront/                 # Customer-facing store (Next.js 16)
 │   └── vendor-portal/              # Vendor management portal (Next.js 16)
 ├── services/                       # Backend microservices
 │   ├── api-gateway/               # Main API gateway (NestJS)
