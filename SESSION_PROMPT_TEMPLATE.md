@@ -74,11 +74,6 @@
   - Store listing page with grid layout
   - Store management dashboard integration
   - Backend API for store CRUD operations
-- ✅ **Subdomain System** for vendor stores:
-  - Auto-generated subdomains when vendors register
-  - `*.localhost` routing for local development
-  - Wildcard DNS support for production
-  - Environment-aware subdomain generation
 
 ### **Current Task**: 
 [e.g., "Add product CRUD operations to vendor service"]

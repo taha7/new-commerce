@@ -12,7 +12,7 @@
 
 **🚧 Current Phase**: Integration testing and vendor store creation
 
-**📋 Next Features**: Product management, store theming, subdomain routing
+**📋 Next Features**: Product management, store theming, subdomain routing (future)
 
 ## 🚀 Quick Start Guide
 
@@ -399,7 +399,7 @@ Once everything is running, you'll be building these features:
 
 ### 2. **Store Creation**
 - New vendor can create their first store
-- Store name validation (for subdomain generation)
+- Store name and slug validation
 - Basic store information capture
 
 ### 3. **Store Configuration Interface**
@@ -412,7 +412,7 @@ Once everything is running, you'll be building these features:
 - Store settings (open hours, policies)
 ```
 
-### 4. **Subdomain Preview**
+### 4. **Subdomain Preview** (Future Phase)
 - Show vendors their subdomain: `{store-name}.platform.com`
 - Validate subdomain availability
 - Display preview of how their store will be accessible
@@ -420,13 +420,13 @@ Once everything is running, you'll be building these features:
 ### 5. **Vendor Dashboard**
 - Simple UI to edit store settings
 - View current store configuration
-- See subdomain URL and status
+- Manage stores and business profile
 
 ## 🛠️ Development Approach
 
 ### Backend (Services)
 - **Auth Service**: Handle user registration, login, JWT tokens
-- **Vendor Service**: Store CRUD operations, subdomain generation
+- **Vendor Service**: Store CRUD operations, subdomain generation (future)
 - **API Gateway**: Route requests, authenticate users
 
 ### Frontend (Apps)
@@ -448,8 +448,8 @@ stores (id, vendor_id, name, slug, description, settings, created_at)
 You'll know Phase 1 is complete when:
 - ✅ A vendor can register an account with email verification
 - ✅ A vendor can login and access their dashboard  
-- ✅ A vendor can create a store with configuration
-- ✅ A vendor can see their subdomain preview (e.g., `my-store.platform.com`)
+- ✅ A vendor can create stores with name, slug, and description
+- ✅ A vendor can view their stores in a dashboard
 - ✅ Store settings are saved and can be edited
 - ✅ Basic vendor dashboard is functional
 
