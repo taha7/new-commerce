@@ -143,9 +143,15 @@ export default function VendorAdminPage() {
           {/* Stores Card */}
           <div className="bg-white shadow rounded-lg p-6">
             <h3 className="text-lg font-semibold mb-4">Your Stores</h3>
-            <p className="text-gray-500 text-sm">
-              Store management coming soon...
+            <p className="text-gray-500 text-sm mb-4">
+              Create and manage your online stores
             </p>
+            <a
+              href="/stores"
+              className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+            >
+              Manage Stores
+            </a>
           </div>
 
           {/* Products Card */}
