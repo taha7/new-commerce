@@ -97,9 +97,12 @@
 - Document APIs and development processes
 
 **Git Workflow**:
+- **IMPORTANT**: Always wait for user confirmation before committing and pushing
 - Commit components independently with descriptive messages
 - Use conventional commit format: `feat:`, `fix:`, `docs:`, etc.
 - Include emoji for visual categorization (🔐 auth, 🏪 vendor, 💻 frontend, 🐳 docker, etc.)
+- Show staged changes and wait for approval before executing git commit
+- Wait for confirmation again before git push
 
 **Architecture Principles**:
 - Each service owns its data (separate databases)
