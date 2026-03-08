@@ -1,8 +1,7 @@
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default function Home() {
-  // Redirect to login page
-  redirect('/login');
+  // Redirect to stores dashboard
+  // Middleware will handle authentication and redirect to /login if needed
+  redirect('/stores');
 }
