@@ -1,15 +1,12 @@
 # API Documentation
 
-## Current Implementation Status
+## Phase 1 — Implemented Endpoints
 
-**✅ Implemented Services:**
+**Services:**
 - Authentication Service (Port 3001)
-- Vendor Service (Port 3002)  
-- API Gateway (Port 3000)
+- Vendor Service (Port 3002)
 
-**🗄️ Database Architecture:**
-- `auth_db`: User authentication and profiles
-- `vendor_db`: Vendor profiles and store configurations
+> **Development note**: The API Gateway (Port 3000) is scaffolded but bypassed in development. Frontends and curl commands call Auth and Vendor services directly on their respective ports.
 
 ---
 
@@ -259,16 +256,8 @@ Get all stores for the authenticated vendor.
 
 ## API Gateway
 
-**Base URL:** `http://localhost:3000`  
-**Purpose:** Central entry point, request routing, CORS handling
-
-### Features
-- **Request Routing**: Forwards requests to appropriate services
-- **CORS Handling**: Configured for frontend applications  
-- **Rate Limiting**: Prevents API abuse
-- **Logging**: Request/response logging for monitoring
-
-### Route Mapping
+**Status:** Scaffolded, bypassed in development
+**Planned route mapping** (when enabled):
 ```
 /auth/*     → Auth Service (Port 3001)
 /vendor/*   → Vendor Service (Port 3002)

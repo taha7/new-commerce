@@ -109,6 +109,7 @@ services:
     volumes:
       - ./services/vendor/src:/app/src
       - ./services/vendor/prisma:/app/prisma
+      - ./services/vendor/public:/app/public
       - ./services/vendor/package.json:/app/package.json
       - ./services/vendor/tsconfig.json:/app/tsconfig.json
       - ./services/vendor/generated:/app/generated
