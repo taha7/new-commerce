@@ -83,6 +83,10 @@ See [DEVELOPMENT.md](./DEVELOPMENT.md) for full setup instructions, all availabl
 
 See [API.md](./API.md) for complete endpoint documentation including request/response examples.
 
+## Production
+
+See [production.md](./production.md) for everything that needs to change before deploying to production — secrets, database setup, vendor subdomain routing, CORS, file uploads, security hardening, and more.
+
 ## Roadmap
 
 ### Phase 1 — Vendor Foundation ✅
