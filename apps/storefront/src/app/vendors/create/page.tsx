@@ -121,8 +121,8 @@ export default function CreateVendorPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Redirect to vendor-portal admin with vendor ID
-        window.location.href = `http://localhost:3003/vendors/${data.vendor.id}/admin?token=${token}`;
+        // Redirect to vendor-portal stores page
+        window.location.href = `http://localhost:3003/stores?token=${token}`;
       } else {
         if (response.status === 401) {
           setError("Authentication failed. Please try again.");

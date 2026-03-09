@@ -4,10 +4,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Store, Plus, ExternalLink } from "lucide-react";
-import { getAuthToken } from "@/lib/auth";
+import { getAuthToken, setAuthToken } from "@/lib/auth";
 
 interface StoreData {
   id: string;
@@ -19,18 +25,23 @@ interface StoreData {
 }
 
 export default function StoresPage() {
-  console.log("Rendering StoresPage");
   const [stores, setStores] = useState<StoreData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const queryToken = params.get("token");
+    if (queryToken) {
+      setAuthToken(queryToken);
+      // Clean the token from the URL without reloading
+      window.history.replaceState({}, "", "/stores");
+    }
+
     const fetchStores = async () => {
       try {
         const token = getAuthToken();
         if (!token) return;
-
-        console.log("Fetching stores with token:", token);
 
         const response = await fetch("http://localhost:3002/vendor/stores", {
           headers: {
@@ -42,7 +53,6 @@ export default function StoresPage() {
           const data = await response.json();
           setStores(data);
         } else {
-          console.error("Failed to fetch stores:", response.statusText, await response.text());
           setError("Failed to load stores");
         }
       } catch (err) {
@@ -112,7 +122,10 @@ export default function StoresPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stores.map((store) => (
-              <Card key={store.id} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={store.id}
+                className="hover:shadow-lg transition-shadow"
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -132,13 +145,16 @@ export default function StoresPage() {
                       {store.description}
                     </p>
                   )}
-                  
+
                   <p className="text-xs text-muted-foreground">
                     Created {new Date(store.createdAt).toLocaleDateString()}
                   </p>
 
                   <div className="flex gap-2">
-                    <Link href={`/stores/${store.id}/products`} className="flex-1">
+                    <Link
+                      href={`/stores/${store.id}/products`}
+                      className="flex-1"
+                    >
                       <Button variant="default" className="w-full">
                         Manage Products
                       </Button>
@@ -156,3 +172,4 @@ export default function StoresPage() {
     </AdminLayout>
   );
 }
+
